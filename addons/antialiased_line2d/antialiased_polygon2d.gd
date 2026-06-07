@@ -10,6 +10,7 @@ extends Polygon2D
 @export var stroke_joint_mode:Line2D.LineJointMode = Line2D.LINE_JOINT_SHARP: set = set_stroke_joint_mode
 @export_range(0.0, 1000.0) var stroke_sharp_limit:float = 2.0: set = set_stroke_sharp_limit
 @export_range(1, 32) var stroke_round_precision: int = 8: set = set_stroke_round_precision
+@export var stroke_width_curve: Curve: set = set_stroke_width_curve
 
 var line_2d := Line2D.new()
 
@@ -18,14 +19,17 @@ func _ready() -> void:
 	line_2d.texture = AntialiasedLine2DTexture.texture
 	line_2d.texture_mode = Line2D.LINE_TEXTURE_TILE
 	line_2d.texture_filter = TextureFilter.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	line_2d.position = offset
 	if polygon.size() >= 1:
-		line_2d.points = AntialiasedLine2D.construct_closed_line(polygon)
+		line_2d.points = AntialiasedLine2D.construct_closed_line(polygon, offset)
 	add_child(line_2d)
 
 
 func _set(property: StringName, value: Variant) -> bool:
 	if property == &"polygon":
-		line_2d.points = AntialiasedLine2D.construct_closed_line(polygon)
+		line_2d.points = AntialiasedLine2D.construct_closed_line(polygon, offset)
+	elif property == &"offset":
+		line_2d.position = value
 
 	return false
 
@@ -53,3 +57,8 @@ func set_stroke_sharp_limit(p_stroke_sharp_limit: float) -> void:
 func set_stroke_round_precision(p_stroke_round_precision: int) -> void:
 	stroke_round_precision = p_stroke_round_precision
 	line_2d.round_precision = stroke_round_precision
+
+
+func set_stroke_width_curve(p_stroke_width_curve: Curve) -> void:
+	stroke_width_curve = p_stroke_width_curve
+	line_2d.width_curve = p_stroke_width_curve

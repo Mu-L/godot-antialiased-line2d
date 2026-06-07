@@ -10,7 +10,7 @@ func _ready() -> void:
 	texture_filter = TextureFilter.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 
 
-static func construct_closed_line(p_polygon: PackedVector2Array) -> PackedVector2Array:
+static func construct_closed_line(p_polygon: PackedVector2Array, offset = Vector2.ZERO) -> PackedVector2Array:
 	var end_point: Vector2 = p_polygon[p_polygon.size() - 1]
 	var distance: float = end_point.distance_to(p_polygon[0]) # distance to start point
 	var bridge_point: Vector2 = end_point.move_toward(p_polygon[0], distance * 0.5)
